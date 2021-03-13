@@ -5,8 +5,8 @@ import os
 
 TK_SILENCE_DEPRECATION=1
 
-# url = "https://pine64.com/product/pinecil-smart-mini-portable-soldering-iron/?v=0446c16e2e66"
-url = r.utils.quote('https://pine64.com/product/14"-pinebook-pro-linux-laptop-ansi-us-keyboard/?v=0446c16e2e66')
+# url = 'https://pine64.com/product/pinecil-smart-mini-portable-soldering-iron/?v=0446c16e2e66'
+url = 'https://pine64.com/product/14"-pinebook-pro-linux-laptop-ansi-us-keyboard/?v=0446c16e2e66'
 
 #don't show a main window
 root = tk.Tk()
