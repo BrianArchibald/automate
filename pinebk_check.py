@@ -1,8 +1,15 @@
+import os
 import requests
 import time
-from bs4 import BeautifulSoup
 import yagmail
+from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 
+load_dotenv()
+
+FROM_EMAIL = os.getenv('FROM_EMAIL')
+TO_EMAIL = os.getenv('TO_EMAIL')
+KEY = os.getenv('KEY')
 URL = 'https://pine64.com/product/14%E2%80%B3-pinebook-pro-linux-laptop-ansi-us-keyboard/?v=0446c16e2e66'
 
 headers = {
@@ -10,28 +17,19 @@ headers = {
 }
 
 def check_availability():
-    page = requests.get(URL, headers=headers)
-    soup = BeautifulSoup(page.content, 'lxml')
-    title = soup.find('h1').get_text()
+    html = requests.get(URL, headers=headers)
+    page_title = BeautifulSoup(html.content, 'lxml').find('h1').get_text()
 
-    if 'Out' not in title:
+    if 'Out' not in page_title:
         send_mail()
     else:
         print("Pinebook Pro is out of stock.")
 
 def send_mail():
-    user = FROM_EMAIL
-    app_password = EMAIL_PASSWORD
-    to = TO_EMAIL
-
-    subject = 'Pinebook Pro is in stock!!'
-    content = ['mail body content']
-
-    with yagmail.SMTP(user, app_password) as yag:
-        yag.send(to, subject, content)
+    with yagmail.SMTP(FROM_EMAIL, KEY) as yag:
+        yag.send(TO_EMAIL, 'Pinebook available!!', URL)
         print('Sent email successfully')
 
 while True:
-    fifteen_minutes = 900
     check_availability()
-    time.sleep(fifteen_minutes)
+    time.sleep(300)
